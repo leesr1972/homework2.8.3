@@ -22,19 +22,21 @@ public class EmployeeController {
                                  @RequestParam Float salary,
                                  @RequestParam Integer departmentId) {
         Employee newEmployee = employeeService.addEmployee(lastName, firstName, salary, departmentId);
-        return newEmployee.getLastName() + " " + newEmployee.getFirstName() + " принят на работу.";
+        return "Новый сотрудник " + newEmployee.getLastName() + " " + newEmployee.getFirstName()
+                + " принят на работу.";
     }
 
     @GetMapping("/remove")
     public String removeEmployee(@RequestParam String lastName, @RequestParam String firstName) {
         Employee disMissedEmployee = employeeService.dismissEmployee(lastName, firstName);
-        return disMissedEmployee.getLastName() + " " + disMissedEmployee.getFirstName() + " уволен.";
+        return "Сотрудник " + disMissedEmployee.getLastName() + " " + disMissedEmployee.getFirstName()
+                + " уволен.";
     }
 
     @GetMapping("/find")
     public String findStaff(@RequestParam String lastName, @RequestParam String firstName) {
         Employee employee = employeeService.findEmloyee(lastName, firstName);
-        return employee.getLastName() + " " + employee.getFirstName() + " найден.";
+        return "Сотрудник " + employee.getLastName() + " " + employee.getFirstName() + " найден.";
     }
 
     @GetMapping("/print")
@@ -47,23 +49,5 @@ public class EmployeeController {
         return employeeService.calculateAllSalaries();
     }
 
-    @GetMapping("/departments/max-salary")
-    public String employeeWitnMaxSalary(@RequestParam Integer departmentId) {
-        return employeeService.maxSalaryofDepartment(departmentId);
-    }
 
-    @GetMapping("/departments/min-salary")
-    public String employeeWitnMinSalary(@RequestParam Integer departmentId) {
-        return employeeService.minSalaryofDepartment(departmentId);
-    }
-
-    @GetMapping("/departments/all")
-    public String printStaffOfDepartment(@RequestParam Integer departmentId) {
-        return employeeService.printStaffOfDepartment(departmentId);
-    }
-
-    @GetMapping("/departments/allPrint")
-    public String printAllStaffbyDepartments() {
-        return employeeService.printAllStaff();
-    }
 }

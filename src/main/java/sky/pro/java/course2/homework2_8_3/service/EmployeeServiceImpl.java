@@ -11,7 +11,7 @@ import java.util.stream.Stream;
 
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
-    private Map<String, Employee> staffOfEmployee = new HashMap<>(Map.of(
+    private static Map<String, Employee> staffOfEmployee = new HashMap<>(Map.of(
             "ПетровЮрий", new Employee("Петров", "Юрий", 200_000f, 0),
             "ЯкобсонИосиф", new Employee("Якобсон", "Иосиф", 180_000f, 0),
             "СтивенДжексон", new Employee("Стивен", "Джексон", 180_000f, 1),
@@ -22,9 +22,6 @@ public class EmployeeServiceImpl implements EmployeeService {
             "ДорошенкоМатвей", new Employee("Дорошенко", "Матвей", 150_000f, 3),
             "АбдуллаевБахром", new Employee("Абдуллаев", "Бахром", 100_000f, 3)
     ));
-
-    private List<String> departments = new ArrayList<>(List.of("Руководство", "Бухгалтерия",
-            "Отдел кадров", "Технический отдел"));
 
     @Override
     public Employee findEmloyee(String lastName, String firstName) {
@@ -78,53 +75,7 @@ public class EmployeeServiceImpl implements EmployeeService {
         return "Фонд оплаты труда составляет " + wageFund + " руб.";
     }
 
-    @Override
-    public String maxSalaryofDepartment(Integer departmentId) {
-        if (departmentId < 0 || departmentId > departments.size() - 1) {
-            throw new BadRequest();
-        }
-        Optional<Employee> employeesWithMaxSalary = staffOfEmployee.values().stream().
-                filter(e -> e.getDepartmentId() == departmentId).
-                max(Comparator.comparingDouble(employee -> employee.getSalary()));
-        return "В отделе " + departments.get(departmentId) + " самую высокую зарплату получает "
-                + employeesWithMaxSalary.get().getLastName() + " "
-                + employeesWithMaxSalary.get().getFirstName() + " - "
-                + employeesWithMaxSalary.get().getSalary() + " руб.";
-    }
-
-    @Override
-    public String minSalaryofDepartment(Integer departmentId) {
-        if (departmentId < 0 || departmentId > departments.size() - 1) {
-            throw new BadRequest();
-        }
-        Optional<Employee> employeesWithMinSalary = staffOfEmployee.values().stream().
-                filter(e -> e.getDepartmentId() == departmentId).
-                min(Comparator.comparingDouble(employee -> employee.getSalary()));
-        return "В отделе " + departments.get(departmentId) + " самую низкую зарплату получает "
-                + employeesWithMinSalary.get().getLastName() + " "
-                + employeesWithMinSalary.get().getFirstName() + " - "
-                + employeesWithMinSalary.get().getSalary() + " руб.";
-    }
-
-    @Override
-    public String printStaffOfDepartment(Integer departmentId) {
-        if (departmentId < 0 || departmentId > departments.size() - 1) {
-            throw new BadRequest();
-        }
-        List<String> staffOfDepartment = staffOfEmployee.values().stream().
-                filter(e -> e.getDepartmentId() == departmentId).
-                map(employee -> employee.getLastName() + " " + employee.getFirstName()).
-                collect(Collectors.toList());
-        return "В отделе " + departments.get(departmentId) + " работают следующие сотрудники: "
-                + staffOfDepartment + ". ";
-    }
-
-    @Override
-    public String printAllStaff() {
-        String allStaff = "Список всех сотрудников: ";
-        for (int i = 0; i < departments.size(); i++) {
-            allStaff = allStaff + printStaffOfDepartment(i);
-        }
-        return allStaff;
+    public static Map<String, Employee> getStaffOfEmployee() {
+        return staffOfEmployee;
     }
 }

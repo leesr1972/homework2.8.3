@@ -10,8 +10,5 @@ public interface EmployeeService {
     public Employee findEmloyee (String firstName, String lastName);
     public String getAllStaff();
     String calculateAllSalaries();
-    String maxSalaryofDepartment(Integer departmentId);
-    String minSalaryofDepartment(Integer departmentId);
-    String printStaffOfDepartment(Integer departmentId);
-    String printAllStaff();
+
 }
